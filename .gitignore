@@ -67,3 +67,39 @@ vcpkg_installed/
 # test output & cache
 Testing/
 .cache/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.ipynb_checkpoints/
+.venv/
+venv/
+.python-version
+
+# Rust
+target/
+**/*.rs.bk
+
+# Editor / IDE
+.idea/
+.vscode/
+*.code-workspace
+*.swo
+Session.vim
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Competitive programming local test data
+input.txt
+output.txt
+in.txt
+out.txt
+data.in
+data.out
+*.stdin
+*.stdout
