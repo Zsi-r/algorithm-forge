@@ -1,7 +1,7 @@
 // 146. LRU Cache
 // https://leetcode.cn/problems/lru-cache/
 
-#include <unordered_map>
+#include <bits/stdc++.h>
 
 using namespace std;
 
