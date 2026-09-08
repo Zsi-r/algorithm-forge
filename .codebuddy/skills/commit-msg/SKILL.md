@@ -1,6 +1,6 @@
 ---
 name: commit-msg
-description: 按项目约定快速生成 Git commit message 并完成提交。当用户要求"提交"、"commit"、"写 commit msg"、"快速 commit"时使用。规则：题目相关（leetcode/luogu/codeforces 等目录）的变更为 [YYYY-MM-DD] 题名 格式，其余变更为 feat: 前缀；两类混合时拆成多个 commit。
+description: 按项目约定快速生成 Git commit message 并完成提交。当用户要求"提交"、"commit"、"写 commit msg"、"快速 commit"时使用。规则：题目相关（leetcode/luogu/codeforces 等目录）的变更为 [YYYY-MM-DD] 平台: 子目录名 格式，其余变更为 feat: 前缀；两类混合时拆成多个 commit。
 ---
 
 # Commit 信息生成器
@@ -18,13 +18,14 @@ description: 按项目约定快速生成 Git commit message 并完成提交。�
 格式：
 
 ```
-[YYYY-MM-DD] 题目名
+[YYYY-MM-DD] 平台: 子目录名
 ```
 
 - 日期：提交当天日期
-- 题目名：目录名去掉题号前缀，下划线替换为空格，全小写
-  - `leetcode/0146_lru_cache/` → `[2026-09-09] lru cache`
-  - `luogu/P1226_quick_power/` → `[2026-09-09] quick power`
+- 平台：题目所属的一级目录名，全小写（`leetcode` / `luogu` / `codeforces` / `atcoder` 等）
+- 子目录名：题目目录名原样保留，含题号前缀
+  - `leetcode/0146_lru_cache/` → `[2026-09-09] leetcode: 0146_lru_cache`
+  - `luogu/P1226_quick_power/` → `[2026-09-09] luogu: P1226_quick_power`
 
 ### 2. 工程类变更
 
@@ -57,7 +58,7 @@ git diff --stat
 
 ```bash
 git add leetcode/0146_lru_cache/
-git commit -m "[2026-09-09] lru cache"
+git commit -m "[2026-09-09] leetcode: 0146_lru_cache"
 git add -A
 git commit -m "feat: xxx"
 ```
@@ -84,9 +85,9 @@ feat: 重构三语言竞赛模板并完善工程化配置
 ```
 用户："帮我 commit"
 → git status 发现 leetcode/0146_lru_cache/（新题）和 templates/、.clang-format（工程）
-→ commit 1: [2026-09-09] lru cache        （只含 leetcode/0146_lru_cache/）
-→ commit 2: feat: 重构模板与工程化配置      （其余全部）
+→ commit 1: [2026-09-09] leetcode: 0146_lru_cache  （只含 leetcode/0146_lru_cache/）
+→ commit 2: feat: 重构模板与工程化配置               （其余全部）
 
 用户："写个 commit msg，只看 luogu 那道新题"
-→ 只对 luogu/P1226_quick_power/ 生成：[2026-09-09] quick power
+→ 只对 luogu/P1226_quick_power/ 生成：[2026-09-09] luogu: P1226_quick_power
 ```
