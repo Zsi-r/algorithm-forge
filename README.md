@@ -40,8 +40,6 @@ python3 main.py
 rustc -O main.rs -o main && ./main
 ```
 
-## 已完成
+## References
 
-| 日期 | 题目 | 标签 |
-| ---- | ---- | ---- |
-| 2026-08-21 | [P1226 【模板】快速幂\|\|取余运算](luogu/P1226_quick_power/) | math, quick-pow |
+- https://yb.tencent.com/s/gRnEbbi3pnFT

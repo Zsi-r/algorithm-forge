@@ -81,6 +81,8 @@ venv/
 # Rust
 target/
 **/*.rs.bk
+# rust-analyzer 项目描述（由 scripts/gen_rust_project.py 自动生成）
+rust-project.json
 
 # Editor / IDE
 .idea/
