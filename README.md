@@ -2,7 +2,7 @@
 
 Daily algorithms, sharpening the brain.
 
-每日一题，主打算法竞赛（洛谷 / Codeforces / AtCoder / LeetCode），每题用 C++ / Python / Rust 各实现一遍。
+每日一题，主打算法竞赛（洛谷 / LeetCode 等）
 
 ## 目录结构
 
@@ -13,8 +13,6 @@ algorithm-forge/
 │   ├── python/template.py
 │   └── rust/template.rs
 ├── luogu/                     # 洛谷：P1226_quick_power
-├── codeforces/                # Codeforces：CF1900A_cover_in_water
-├── atcoder/                   # AtCoder：ABC365A_jump
 └── leetcode/                  # LeetCode：0001_two_sum
 ```
 
@@ -23,7 +21,6 @@ algorithm-forge/
 ```text
 luogu/P1226_quick_power/
 ├── statement.md   # 题面：来源链接、描述、输入输出格式、样例
-├── solution.md    # 思路 / 复杂度 / 坑点，头部带 front-matter 元信息（source、tags…）
 ├── main.cpp       # C++
 ├── main.py        # Python
 └── main.rs        # Rust
@@ -35,8 +32,11 @@ luogu/P1226_quick_power/
 ## 本地运行
 
 ```bash
+# cpp
 g++ -O2 -std=c++17 -o main main.cpp && ./main
+# python
 python3 main.py
+# rust
 rustc -O main.rs -o main && ./main
 ```
 

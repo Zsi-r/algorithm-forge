@@ -9,6 +9,7 @@
     python3 scripts/gen_rust_project.py
 """
 import json
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -31,12 +32,6 @@ def find_rust_files():
     return files
 
 
-def detect_target(path: Path) -> str:
-    """含 fn main 视为可执行，否则视为库（LeetCode 类骨架无 main）。"""
-    text = path.read_text(encoding="utf-8", errors="ignore")
-    return "bin" if "fn main" in text else "lib"
-
-
 def crate_name(path: Path) -> str:
     """取目录名作为 crate 名，模板文件取文件名。"""
     rel = path.relative_to(ROOT)
@@ -44,6 +39,19 @@ def crate_name(path: Path) -> str:
     if len(parts) >= 2 and parts[-1] == "main.rs":
         return parts[-2]
     return path.stem
+
+
+def detect_sysroot():
+    """探测 rustc sysroot 与 std 源码路径；sysroot 留 null 会导致 std 符号全部无法解析。"""
+    sysroot = subprocess.run(
+        ["rustc", "--print", "sysroot"], capture_output=True, text=True, check=True
+    ).stdout.strip()
+    sysroot_src = Path(sysroot) / "lib" / "rustlib" / "src" / "rust" / "library"
+    return {
+        "sysroot": sysroot,
+        # rust-src 组件缺失时置 null，rust-analyzer 会降级为仅二进制分析
+        "sysroot_src": str(sysroot_src) if sysroot_src.is_dir() else None,
+    }
 
 
 def main():
@@ -56,14 +64,17 @@ def main():
             "edition": EDITION,
             "cfg": [],
             "deps": [],
-            "target": detect_target(f),
+            # target 字段是平台三元组（如 x86_64-unknown-linux-gnu）而非 crate 类型，
+            # 留 null 让 rust-analyzer 用默认宿主平台
+            "target": None,
             "is_proc_macro": False,
         })
     # 按 root_module 排序，保证生成结果稳定
     crates.sort(key=lambda c: c["root_module"])
 
-    # sysroot 留 null，由 rust-analyzer 自动探测，避免硬编码绝对路径
-    project = {"sysroot": None, "crates": crates}
+    # 显式写入 sysroot，避免自动探测失败导致 std 未解析
+    sysroot = detect_sysroot()
+    project = {**sysroot, "crates": crates}
 
     out_path = ROOT / "rust-project.json"
     out_path.write_text(
@@ -71,7 +82,7 @@ def main():
     )
     print(f"已生成 {out_path.relative_to(ROOT)}：{len(crates)} 个 crate")
     for c in crates:
-        print(f"  - {c['display_name']:<24} ({c['target']:<3}) <- {c['root_module']}")
+        print(f"  - {c['display_name']:<24} <- {c['root_module']}")
 
 
 if __name__ == "__main__":
