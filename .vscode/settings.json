@@ -1,0 +1,6 @@
+{
+  // 关闭 AI 智能补全（自动内联补全）
+  "codingcopilot.enableAutoCompletions": false,
+  // 关闭下一步编辑建议（NES）
+  "codingcopilot.enableNextEditSuggestions": false
+}

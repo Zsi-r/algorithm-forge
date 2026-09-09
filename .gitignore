@@ -86,7 +86,6 @@ rust-project.json
 
 # Editor / IDE
 .idea/
-.vscode/
 *.code-workspace
 *.swo
 Session.vim
