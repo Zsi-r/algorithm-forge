@@ -22,7 +22,7 @@ description: 通过题号或 slug 从 LeetCode（力扣中国）拉取题目，�
 
 ```
 leetcode/0146_lru_cache/
-├── statement.md   # 题面：来源链接、描述、示例
+├── statement.md   # 题面（中文）：来源链接、描述、示例
 ├── main.cpp       # LeetCode 代码骨架（含类/函数签名，无 main()）
 └── main.rs        # LeetCode 代码骨架
 ```
@@ -30,6 +30,7 @@ leetcode/0146_lru_cache/
 - 目录名：`{4位零填充题号}_{小写蛇形英文标题}`，如 `0001_two_sum`、`0146_lru_cache`
 - 代码骨架直接来自 LeetCode API 的 `codeSnippets`，已含正确的类/函数签名
 - LeetCode 是函数/类题，不需要 `main()` 和 stdin/stdout，与洛谷/Codeforces 的竞赛模板不同
+- **题面语言**：`statement.md` 一律使用中文。脚本优先取力扣官方中文翻译（`translatedTitle` / `translatedContent`），难度也输出中文（简单/中等/困难）；目录名仍用英文蛇形名
 
 ## 工作流程
 
@@ -59,7 +60,8 @@ python3 .codebuddy/skills/leetcode-fetcher/scripts/fetch_problem.py <题号或sl
 
 脚本完成后：
 1. 阅读 `statement.md` — 检查题目描述是否渲染正确。LeetCode 内容为 HTML，脚本做了轻量 HTML→markdown 转换，可能需要少量手动清理。
-2. 两个 `main.*` 文件均为骨架——可直接开始编码。
+2. **确保题面为中文**：脚本优先使用力扣官方中文翻译（`translatedTitle` / `translatedContent`）。若题目没有官方中文翻译（此时 statement.md 仍是英文），必须手动将题名、描述、示例、提示完整翻译成中文后再交付。
+3. 两个 `main.*` 文件均为骨架——可直接开始编码。
 
 ### 第四步：刷新 rust-analyzer 项目描述
 

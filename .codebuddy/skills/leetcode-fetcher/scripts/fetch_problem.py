@@ -81,10 +81,12 @@ def fetch_problem(slug: str) -> dict:
       question(titleSlug: $titleSlug) {
         questionFrontendId
         title
+        translatedTitle
         titleSlug
         difficulty
         topicTags { name translatedName }
         content
+        translatedContent
         sampleTestCase
         exampleTestcases
         codeSnippets { lang langSlug code }
@@ -153,20 +155,26 @@ def html_to_markdown(html: str) -> str:
 
 # ---------- File builders ----------
 
+# 难度英文 → 中文
+DIFFICULTY_CN = {"Easy": "简单", "Medium": "中等", "Hard": "困难"}
+
+
 def build_statement(q: dict) -> str:
     fid = q.get("questionFrontendId", "")
-    title = q.get("title", "")
-    slug = q.get("titleSlug", "")
+    # 优先使用官方中文题名与题面（translatedTitle / translatedContent），无翻译时回退英文
+    title = q.get("translatedTitle") or q.get("title", "")
+    content = q.get("translatedContent") or q.get("content") or ""
+    difficulty = q.get("difficulty", "")
     tags = [t.get("translatedName") or t.get("name", "") for t in q.get("topicTags", [])]
     lines = [
-        f"# [{fid}. {title}](https://leetcode.cn/problems/{slug}/)",
+        f"# [{fid}. {title}](https://leetcode.cn/problems/{q.get('titleSlug', '')}/)",
         "",
         "- 来源：LeetCode",
-        f"- 难度：{q.get('difficulty', '未知')}",
+        f"- 难度：{DIFFICULTY_CN.get(difficulty, difficulty or '未知')}",
     ]
     if tags:
         lines.append(f"- 标签：{', '.join(tags)}")
-    lines += ["", "## 题目描述", "", html_to_markdown(q.get("content") or ""), ""]
+    lines += ["", "## 题目描述", "", html_to_markdown(content), ""]
     # Examples
     examples = q.get("exampleTestcases") or q.get("sampleTestCase") or ""
     if examples:
@@ -249,7 +257,8 @@ def main():
 
     # Build code snippets map: langSlug -> code
     snippets = {s["langSlug"]: s.get("code", "") for s in q.get("codeSnippets", []) or []}
-    header = f"{fid}. {title}"
+    # 代码骨架头注释优先用中文题名
+    header = f"{fid}. {q.get('translatedTitle') or title}"
 
     # Create directory + files
     problem_dir.mkdir(parents=True)

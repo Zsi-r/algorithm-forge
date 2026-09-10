@@ -1,6 +1,33 @@
 {
+  // ===== 关闭 AI 补全 =====
   // 关闭 AI 智能补全（自动内联补全）
   "codingcopilot.enableAutoCompletions": false,
   // 关闭下一步编辑建议（NES）
-  "codingcopilot.enableNextEditSuggestions": false
+  "codingcopilot.enableNextEditSuggestions": false,
+  // ===== 保存时自动格式化 =====
+  "editor.formatOnSave": true,
+  "[cpp]": {
+    "editor.defaultFormatter": "ms-vscode.cpptools"
+  },
+  "[c]": {
+    "editor.defaultFormatter": "ms-vscode.cpptools"
+  },
+  // 使用项目根目录的 .clang-format 作为格式化风格（由 cpptools 内置 clang-format 引擎执行）
+  "C_Cpp.clang_format_style": "file",
+  "C_Cpp.formatting": "default",
+  // 临时开启详细日志用于排查（问题解决后删除此行）
+  "C_Cpp.loggingLevel": "Debug",
+  // ===== 普通单词级补全（非 AI） =====
+  // 输入时自动弹出建议列表
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": false
+  },
+  // 基于当前及已打开文档中的单词给出候选
+  "editor.wordBasedSuggestions": "currentDocument",
+  // 建议列表中显示「单词」类别候选
+  "editor.suggest.showWords": true,
+  // 输入触发字符（如 . -> ::）时自动弹出建议
+  "editor.suggestOnTriggerCharacters": true
 }
