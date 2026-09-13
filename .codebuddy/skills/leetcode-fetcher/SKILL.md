@@ -1,13 +1,13 @@
 ---
 name: leetcode-fetcher
-description: 通过题号或 slug 从 LeetCode（力扣中国）拉取题目，并创建包含 statement.md 及 C++/Rust 两语言代码骨架（直接从 LeetCode API 获取函数/类签名）的解题目录。LeetCode 是函数/类题，代码骨架不含 main() 和 I/O。当用户想要拉取 LeetCode 题目、开一道新的 LeetCode 题目、或搭建 LeetCode 题目目录骨架时，应使用此 skill。
+description: 通过题号或 slug 从 LeetCode（力扣中国）拉取题目，并创建包含 statement.md 及 C++ 代码骨架（直接从 LeetCode API 获取函数/类签名）的解题目录。只生成 C++，不生成 Rust。LeetCode 是函数/类题，代码骨架不含 main() 和 I/O。当用户想要拉取 LeetCode 题目、开一道新的 LeetCode 题目、或搭建 LeetCode 题目目录骨架时，应使用此 skill。
 ---
 
 # LeetCode 拉取器
 
 ## 概述
 
-从 LeetCode（力扣中国）拉取一道题目，在 `leetcode/` 下按项目命名规范创建可直接开始编码的目录：`{4位零填充题号}_{小写蛇形英文标题}/`。每个题目目录包含 `statement.md`、`main.cpp`、`main.rs` 三个文件。
+从 LeetCode（力扣中国）拉取一道题目，在 `leetcode/` 下按项目命名规范创建可直接开始编码的目录：`{4位零填充题号}_{小写蛇形英文标题}/`。每个题目目录包含 `statement.md`、`main.cpp` 两个文件（只生成 C++，不生成 Rust）。
 
 ## 何时使用
 
@@ -23,8 +23,7 @@ description: 通过题号或 slug 从 LeetCode（力扣中国）拉取题目，�
 ```
 leetcode/0146_lru_cache/
 ├── statement.md   # 题面（中文）：来源链接、描述、示例
-├── main.cpp       # LeetCode 代码骨架（含类/函数签名，无 main()）
-└── main.rs        # LeetCode 代码骨架
+└── main.cpp       # LeetCode 代码骨架（含类/函数签名，无 main()）
 ```
 
 - 目录名：`{4位零填充题号}_{小写蛇形英文标题}`，如 `0001_two_sum`、`0146_lru_cache`
@@ -61,15 +60,11 @@ python3 .codebuddy/skills/leetcode-fetcher/scripts/fetch_problem.py <题号或sl
 脚本完成后：
 1. 阅读 `statement.md` — 检查题目描述是否渲染正确。LeetCode 内容为 HTML，脚本做了轻量 HTML→markdown 转换，可能需要少量手动清理。
 2. **确保题面为中文**：脚本优先使用力扣官方中文翻译（`translatedTitle` / `translatedContent`）。若题目没有官方中文翻译（此时 statement.md 仍是英文），必须手动将题名、描述、示例、提示完整翻译成中文后再交付。
-3. 两个 `main.*` 文件均为骨架——可直接开始编码。
+3. `main.cpp` 为骨架——可直接开始编码。
 
-### 第四步：刷新 rust-analyzer 项目描述
+### 第四步：完成
 
-新增了 `main.rs` 后需重新生成 `rust-project.json`，否则 rust-analyzer 无法识别新题目目录：
-
-```bash
-python3 scripts/gen_rust_project.py
-```
+无需其他收尾步骤（不生成 Rust，无需刷新 rust-analyzer）。
 
 ### 降级方案
 

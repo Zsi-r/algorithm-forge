@@ -12,12 +12,12 @@ Examples:
 
 LeetCode 题目是函数/类题，不需要 main() 和 stdin/stdout。
 脚本从 LeetCode API 直接拉取题目代码骨架（codeSnippets），包含正确的函数/类签名。
+只生成 C++ 代码骨架，不生成 Rust。
 
 The script creates the following structure under <workspace>/leetcode/:
     0001_two_sum/
     ├── statement.md   # 题面（描述、示例）
-    ├── main.cpp       # LeetCode 代码骨架（含类/函数签名）
-    └── main.rs        # LeetCode 代码骨架
+    └── main.cpp       # LeetCode 代码骨架（含类/函数签名）
 """
 import argparse
 import json
@@ -31,10 +31,9 @@ GRAPHQL_URL = "https://leetcode.cn/graphql/"
 PROBLEMS_API = "https://leetcode.cn/api/problems/all/"
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) algorithm-forge/1.0"
 
-# LeetCode langSlug → 文件名 + 前缀
+# LeetCode langSlug → 文件名 + 前缀（只生成 C++，不生成 Rust）
 LANG_MAP = {
     "cpp":  ("main.cpp", "cpp"),
-    "rust": ("main.rs", "rust"),
 }
 
 
@@ -195,12 +194,6 @@ def build_code_file(lang_slug: str, snippet_code: str, url: str, header_title: s
             f"// {url}\n"
             f"#include <bits/stdc++.h>\n"
             f"using namespace std;\n"
-        )
-        return prefix + snippet + "\n"
-    elif lang_slug == "rust":
-        prefix = (
-            f"// {header_title}\n"
-            f"// {url}\n"
         )
         return prefix + snippet + "\n"
     else:

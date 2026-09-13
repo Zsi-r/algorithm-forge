@@ -49,16 +49,11 @@ python3 .codebuddy/skills/hot100-picker/scripts/pick_random.py
 python3 .codebuddy/skills/leetcode-fetcher/scripts/fetch_problem.py <slug>
 ```
 
-这会在 `leetcode/{4位零填充题号}_{蛇形名}/` 下创建 `statement.md`、`main.cpp`、`main.rs`。详细约定与降级方案见 `leetcode-fetcher` skill。
+这会在 `leetcode/{4位零填充题号}_{蛇形名}/` 下创建 `statement.md`、`main.cpp`。详细约定与降级方案见 `leetcode-fetcher` skill。
 
 ### 第三步：收尾
 
-1. 告知用户选中了哪道题（标题、专题、难度）及目录位置
-2. 刷新 rust-analyzer 项目描述：
-
-```bash
-python3 scripts/gen_rust_project.py
-```
+告知用户选中了哪道题（标题、专题、难度）及目录位置即可。不生成 Rust，无需刷新 rust-analyzer 项目描述。
 
 ## 示例
 
@@ -68,5 +63,4 @@ python3 scripts/gen_rust_project.py
 → 输出：题号 11，slug container-with-most-water，专题 双指针，难度 中等
 → 运行：python3 .codebuddy/skills/leetcode-fetcher/scripts/fetch_problem.py container-with-most-water
 → 创建：leetcode/0011_container_with_most_water/
-→ 运行：python3 scripts/gen_rust_project.py
 ```
