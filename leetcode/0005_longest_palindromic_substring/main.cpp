@@ -4,6 +4,7 @@
 using namespace std;
 
 // 思路：动态规划，dp[i][j] = dp[i - 1][j - 1] && (s[i]==s[j])
+// 时间 O(n²)，空间 O(n²)
 class Solution {
   public:
     string longestPalindrome(string s) {
@@ -33,3 +34,29 @@ class Solution {
         return res;
     }
 };
+
+/* 解法二：中心扩展（时间 O(n²)，空间 O(1)）
+ * 枚举每个回文中心：奇数长度中心为单个字符 i，偶数长度中心为
+ * 相邻字符对 (i, i+1)，从中心向两侧扩展直到字符不等。
+ * 记录扩展出的最长回文起点与长度。相比 DP 省掉 O(n²) 的状态表。
+ *
+ * class Solution {
+ *   public:
+ *     string longestPalindrome(string s) {
+ *         int n = s.size(), start = 0, maxLen = 1;
+ *         auto expand = [&](int l, int r) {
+ *             while (l >= 0 && r < n && s[l] == s[r]) { --l; ++r; }
+ *             // 退出循环时回文串实际范围是 [l+1, r-1]，长度为 r-l-1
+ *             if (r - l - 1 > maxLen) {
+ *                 start  = l + 1;
+ *                 maxLen = r - l - 1;
+ *             }2
+ *         };
+ *         for (int i = 0; i < n; ++i) {
+ *             expand(i, i);     // 奇数长度中心
+ *             expand(i, i + 1); // 偶数长度中心
+ *         }
+ *         return s.substr(start, maxLen);
+ *     }
+ * };
+ */
