@@ -10,6 +10,7 @@
 """
 import json
 import subprocess
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -43,9 +44,15 @@ def crate_name(path: Path) -> str:
 
 def detect_sysroot():
     """探测 rustc sysroot 与 std 源码路径；sysroot 留 null 会导致 std 符号全部无法解析。"""
-    sysroot = subprocess.run(
-        ["rustc", "--print", "sysroot"], capture_output=True, text=True, check=True
-    ).stdout.strip()
+    try:
+        sysroot = subprocess.run(
+            ["rustc", "--print", "sysroot"], capture_output=True, text=True, check=True
+        ).stdout.strip()
+    except (FileNotFoundError, subprocess.CalledProcessError):
+        # rustc 不可用时省略 sysroot 字段（不要写 null），由 rust-analyzer 自行探测
+        print("警告：未找到 rustc，rust-project.json 将省略 sysroot 字段，"
+              "std 解析依赖 rust-analyzer 自动探测", file=sys.stderr)
+        return {}
     sysroot_src = Path(sysroot) / "lib" / "rustlib" / "src" / "rust" / "library"
     return {
         "sysroot": sysroot,
